@@ -1,5 +1,5 @@
 {
-  "extends": "@mapgl-shadows/typescript-config/react-library.json",
+  "extends": "@mapgl-shadows/typescript-config/base.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }

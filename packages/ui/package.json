@@ -1,32 +1,40 @@
 {
-  "name": "@acme/ui",
+  "name": "@mapgl-shadows/ui",
   "version": "0.0.0",
   "sideEffects": false,
+  "private": true,
   "license": "MIT",
   "exports": {
-    "./button": {
-      "types": "./src/button.tsx",
-      "import": "./dist/button.mjs",
-      "require": "./dist/button.js"
-    }
+    "./icon/clock": "./src/components/icons/Clock.tsx",
+    "./icon/play": "./src/components/icons/Play.tsx",
+    "./block": "./src/components/block/index.tsx",
+    "./button": "./src/components/button/index.tsx",
+    "./datepicker": "./src/components/datepicker/index.tsx",
+    "./slider": "./src/components/slider/index.tsx",
+    "./input-with-slider": "./src/components/inputWithSlider/index.tsx",
+    "./text": "./src/components/text/index.tsx"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "vite build",
+    "dev": "vite",
     "lint": "eslint . --max-warnings 0",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
+    "@mapgl-shadows/eslint-config": "*",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "@types/uuid": "^9.0.8",
     "eslint": "^8.57.0",
-    "@repo/typescript-config": "*",
-    "tsup": "^8.0.2",
-    "typescript": "^5.3.3"
+    "@mapgl-shadows/typescript-config": "*",
+    "typescript": "^5.3.3",
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^5.2.12"
   },
   "dependencies": {
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "@2gis-kit/css": "0.0.3",
+    "uuid": "^9.0.1"
   },
   "publishConfig": {
     "access": "public"

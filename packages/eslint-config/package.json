@@ -1,11 +1,10 @@
 {
-  "name": "@repo/eslint-config",
+  "name": "@mapgl-shadows/eslint-config",
   "version": "0.0.0",
   "private": true,
   "files": [
     "library.js",
-    "react.js",
-    "storybook.js"
+    "react.js"
   ],
   "devDependencies": {
     "@vercel/style-guide": "^5.2.0",
