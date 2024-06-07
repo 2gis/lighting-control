@@ -7,7 +7,7 @@ const formatter = new Intl.DateTimeFormat('en-US', {
     minute: 'numeric'
 });
 
-export function formatHHMM(date: Date) {
+export function formatHHMM(date: Date): string {
     return formatter.format(date);
 }
 
@@ -25,9 +25,9 @@ export function parseDatepickerFormat(value: string | undefined): Date {
     const result = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
 
     if (result) {
-        date.setFullYear(parseInt(result[1]!));
-        date.setMonth(parseInt(result[2]!) - 1);
-        date.setDate(parseInt(result[3]!));
+        date.setFullYear(parseInt(result[1]));
+        date.setMonth(parseInt(result[2]) - 1);
+        date.setDate(parseInt(result[3]));
     }
 
     return date;

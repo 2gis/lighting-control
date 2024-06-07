@@ -1,4 +1,4 @@
-import Suncalc from "suncalc";
+import { getPosition, getMoonPosition} from "suncalc";
 import type Mapgl from "../project";
 import { radToDeg } from "./utils";
 
@@ -21,10 +21,10 @@ const MAX_MOON_INTENSITY = 0.2; // Пока что не учитываем фа�
 export class MapglLightingControl {
   constructor(private map: Mapgl.Map) {}
 
-  public setLightingForDate(date: Date) {
+  public setLightingForDate(date: Date): void {
     const [lng, lat] = this.map.getCenter();
-    const sunPosition = Suncalc.getPosition(date, lat, lng);
-    const moonPosition = Suncalc.getMoonPosition(date, lat, lng);
+    const sunPosition = getPosition(date, lat, lng);
+    const moonPosition = getMoonPosition(date, lat, lng);
 
     const sunAltitude = radToDeg(sunPosition.altitude);
     const sunAzimuth = radToDeg(sunPosition.azimuth);
@@ -75,8 +75,9 @@ export class MapglLightingControl {
     moon: DirectionalLightSource;
     atmosphere: AmbientLightSource;
     shadowSource: "sun" | "moon";
-  }) {
-    // @ts-expect-error Hidden member access
+  }): void {
+    // @ts-expect-error -- Hidden member access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Hidden member access
     this.map.setLightingStyle({
       sources: {
         sun: {

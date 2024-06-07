@@ -1,16 +1,17 @@
-import { FC, useCallback, useEffect, useState } from "react"
+import type { FC} from "react";
+import { useCallback, useEffect, useState } from "react"
 import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 import { Slider } from '@mapgl-shadows/ui/slider'
 import {MapglLightingControl} from '@mapgl-shadows/lighting-control'
+import { useMapEffect } from "../hooks/useMapEffect";
+import { formatHHMM, formatToMinutes } from '../utils/date'
+import type { TMap } from "../types";
 import { TimelapseButton } from "./TimelapseButton";
 import { Datepicker } from "./Datepicker";
 import { Time } from "./Time";
 import styles from './LightControl.module.css'
-import { useMapEffect } from "../hooks/useMapEffect";
-import { formatHHMM, formatToMinutes } from '../utils/date'
-import { TMap } from "../types";
 
-type Props = {
+interface Props {
     className?: string
 }
 
@@ -183,25 +184,25 @@ export const LightControl: FC<Props> = (props) => {
 
     return (<div className={props.className ? `${props.className} ${styles.lightControl}` : styles.lightControl} >
         <div className={styles.controls}>
-            <Datepicker value={selectedDate} disabled={!tz} onChange={onDateChange} />
+            <Datepicker disabled={!tz} onChange={onDateChange} value={selectedDate} />
             <Time value={formatHHMM(selectedDate)} />
             <TimelapseButton active={timelapseEnabled} disabled={!tz} onClick={toggleTimelapse} />
         </div>
         <div className={styles.slider}>
-            <Time value="12:00 AM" noIcon />
+            <Time noIcon value="12:00 AM" />
             <div className={styles.sliderControl}>
                 <Slider
                     disabled={!tz}
-                    type="slider"
-                    value={formatToMinutes(selectedDate)}
-                    min={0}
                     max={1439}
-                    step={1}
+                    min={0}
                     onChange={onMinutesChange}
                     onMouseMove={onMinutesChange}
+                    step={1}
+                    type="slider"
+                    value={formatToMinutes(selectedDate)}
                 />
             </div>
-            <Time value="23:59 PM" noIcon />
+            <Time noIcon value="23:59 PM" />
         </div>
     </div>)
 }

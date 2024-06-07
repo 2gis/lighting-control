@@ -1,57 +1,68 @@
 import { useEffect } from "react";
-import { MapWrapper } from "./MapWrapper";
+import type { FC } from 'react'
 import { useMapContext } from '../hooks/useMapContext'
 import { MAP_EL_ID } from '../consts'
-import { TMap } from "../types";
+import type { TMap } from "../types";
+import { MapWrapper } from "./MapWrapper";
 
 const DEFAULT_CENTER: [number, number] = [55.31878, 25.23584];
 
-export function MapglMap() {
-    const { ensureApi, setMap } = useMapContext();
+// eslint-disable-next-line react/function-component-definition -- wtf
+export const MapglMap: FC = () => {
+  const { ensureApi, setMap } = useMapContext();
 
-    useEffect(() => {
-        let map: TMap | undefined = undefined;
-        let cancelled = false;
-    
-        ensureApi().then((api) => {
-          if (cancelled) {
-            return;
-          }
+  useEffect(() => {
+    let map: TMap | undefined;
+    let cancelled = false;
 
-          const search = new URLSearchParams(window.location.search);
-          const lng = search.get('lng') ? parseFloat(search.get('lng')!) : DEFAULT_CENTER[0];
-          const lat = search.has('lat') ? parseFloat(search.get('lat')!) : DEFAULT_CENTER[1];
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- ok here
+    ensureApi().then((api) => {
+      if (cancelled) {
+        return;
+      }
 
-          map = new api.Map(
-            MAP_EL_ID,
-            {
-                center: [lng, lat],
-                zoom: 18,
-                key: '4970330e-7f1c-4921-808c-0eb7c4e63001',
-                enableTrackResize: true,
-            }
-          );
+      const search = new URLSearchParams(window.location.search);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we're sure
+      const lngFromURL = search.has('lng') ? parseFloat(search.get('lng')!) : DEFAULT_CENTER[0];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we're sure
+      const latFromURL = search.has('lat') ? parseFloat(search.get('lat')!) : DEFAULT_CENTER[1];
 
-          map.on('moveend', () => {
-            search.set('lng', map!.getCenter()[0]!.toString());
-            search.set('lat', map!.getCenter()[1]!.toString());
-            history.replaceState({}, document.title, search.toString());
-          });
+      map = new api.Map(
+        MAP_EL_ID,
+        {
+          center: [lngFromURL, latFromURL],
+          zoom: 18,
+          key: '4970330e-7f1c-4921-808c-0eb7c4e63001',
+          enableTrackResize: true,
+        }
+      );
 
-          // Выкинем инстанс карты в глобальный скоуп для удобного дебага и для e2e-тестов
-          (window as any).map = map;
-    
-          setMap(map);
-        });
-    
-        return () => {
-          cancelled = true;
-          map?.destroy();
-          setMap(undefined);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
-    
+      map.on('moveend', () => {
+        if (!map) {
+          return;
+        }
 
-    return <MapWrapper />
+        const [lng, lat] = map.getCenter();
+        search.set('lng', lng.toPrecision(8));
+        search.set('lat', lat.toPrecision(8));
+        history.replaceState({}, document.title, `${window.location.origin}${window.location.pathname}?${search.toString()}`);
+      });
+
+      // Выкинем инстанс карты в глобальный скоуп для удобного дебага и для e2e-тестов
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we have defined map instance
+      window.map = map!;
+
+      setMap(map);
+    });
+
+    return () => {
+      cancelled = true;
+      map?.destroy();
+      setMap(undefined);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- wtf
+  }, []);
+
+
+  return <MapWrapper />
 }

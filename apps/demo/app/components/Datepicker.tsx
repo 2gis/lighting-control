@@ -1,17 +1,19 @@
-import { FC, useCallback } from "react";
+import type { FC} from "react";
+import { useCallback } from "react";
 import { DateInput } from "@mapgl-shadows/ui/datepicker";
 import { formatToDatepicker, parseDatepickerFormat } from '../utils/date';
 
-type Props = {
+interface DatepickerProps {
     value: Date,
     disabled?: boolean,
     onChange: (date: Date) => void
 }
 
-export const Datepicker: FC<Props> = ({ value, disabled = false, onChange }) => {
-    const _onChange = useCallback((value: string | undefined) => {
-        onChange(parseDatepickerFormat(value))
+// eslint-disable-next-line react/function-component-definition -- wtf...
+export const Datepicker: FC<DatepickerProps> = ({ value, disabled = false, onChange }) => {
+    const _onChange = useCallback((newValue: string | undefined) => {
+        onChange(parseDatepickerFormat(newValue))
     }, [onChange]);
     
-    return <DateInput value={formatToDatepicker(value)} disabled={disabled} onChange={_onChange} />
+    return <DateInput disabled={disabled} onChange={_onChange} value={formatToDatepicker(value)} />
 }

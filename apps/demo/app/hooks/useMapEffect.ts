@@ -1,7 +1,6 @@
-import { EffectCallback, useEffect } from 'react';
-
-import { TApi, TMap } from '../types';
-
+import type { EffectCallback} from 'react';
+import { useEffect } from 'react';
+import type { TApi, TMap } from '../types';
 import { useMapContext } from './useMapContext';
 
 /**
@@ -18,7 +17,7 @@ export const useMapEffect = (
 ) => {
     const { map, api } = useMapContext();
 
-    return useEffect(() => {
+    useEffect(() => {
         if (!map || !api) {
             return;
         }

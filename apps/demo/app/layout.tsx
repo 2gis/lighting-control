@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <script src="https://unpkg.com/browser-geo-tz@latest/dist/geotz.js"></script>
+        <script src="https://unpkg.com/browser-geo-tz@latest/dist/geotz.js" />
         {children}
       </body>
     </html>

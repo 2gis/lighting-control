@@ -1,7 +1,7 @@
-import { TApi } from '../types';
+import type { TApi } from '../types';
 
-let promise: Promise<TApi> | undefined = undefined;
-let api: TApi | undefined = undefined;
+let promise: Promise<TApi> | undefined;
+let api: TApi | undefined;
 
 export const loadMapApi = (mapglUrl?: string): Promise<TApi> => {
   if (promise) {
@@ -18,4 +18,4 @@ export const loadMapApi = (mapglUrl?: string): Promise<TApi> => {
   return promise;
 };
 
-export const getApi = () => api;
+export const getApi = (): TApi | undefined => api;

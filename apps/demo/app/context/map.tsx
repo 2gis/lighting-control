@@ -1,14 +1,15 @@
-import { createContext, FC, ReactNode, useRef, useState } from 'react';
+import type { FC, ReactNode} from 'react';
+import { createContext, useRef, useState } from 'react';
+import type { TMap, TApi } from '../types';
 import { getApi, loadMapApi } from './mapgl'
-import { TMap, TApi } from '../types';
 
-type MapContext = {
+interface MapContext {
   map?: TMap;
   api?: TApi;
   ensureMap: () => Promise<TMap>;
   ensureApi: () => Promise<TApi>;
   setMap: (map: TMap | undefined) => void;
-};
+}
 
 export const MapContext = createContext<MapContext>({
   ensureMap: () => {
