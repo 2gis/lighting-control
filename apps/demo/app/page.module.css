@@ -1,0 +1,11 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+}
+
+.lightControl {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+}

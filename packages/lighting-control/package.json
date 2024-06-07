@@ -1,0 +1,30 @@
+{
+  "name": "@mapgl-shadows/lighting-control",
+  "version": "0.0.0",
+  "description": "MapGL lighting control plugin.",
+  "main": "index.js",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint . --max-warnings 0",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "devDependencies": {
+    "@mapgl-shadows/eslint-config": "*",
+    "@mapgl-shadows/typescript-config": "*",
+    "@types/suncalc": "^1.9.2",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.2.12"
+  },
+  "peerDependencies": {
+    "@2gis/mapgl": "^1.47.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "suncalc": "^1.9.0"
+  }
+}

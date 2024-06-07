@@ -1,0 +1,8 @@
+    export { Clock } from './components/icons/Clock'
+    export { Play } from './components/icons/Play'
+    export { Block } from './components/block/index'
+    export { Button } from './components/button/index'
+    export { DateInput } from './components/datepicker/index'
+    export {Slider } from './components/slider/index'
+    export { InputWithSlider } from './components/inputWithSlider/index'
+    export { Text} from './components/text/index'
