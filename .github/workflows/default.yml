@@ -32,7 +32,7 @@ jobs:
       - name: Deploy 🚀
         uses: actions/upload-pages-artifact@v3.0.1
         with:
-          pats: docs/
+          path: docs/
 
   deploy:
     needs: build
