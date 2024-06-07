@@ -33,7 +33,6 @@ jobs:
           npm run build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: crazy-max/ghaction-github-pages@v4.0.0
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: docs # The folder the action should deploy.
+          build_dir: docs # The folder the action should deploy.
