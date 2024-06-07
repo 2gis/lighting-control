@@ -33,6 +33,6 @@ jobs:
           npm run build
 
       - name: Deploy 🚀
-        uses: crazy-max/ghaction-github-pages@v4.0.0
+        uses: actions/deploy-pages@v4.0.5
         with:
-          build_dir: docs # The folder the action should deploy.
+          artifact_name: docs # The folder the action should deploy.
