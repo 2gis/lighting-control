@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   transpilePackages: ["@mapgl-shadows/ui"],
-  output: 'export'
+  output: 'export',
+  basePath: '/lighting-control',
+  assetPrefix: '/lighting-control'
 };
