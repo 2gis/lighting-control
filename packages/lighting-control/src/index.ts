@@ -1,4 +1,4 @@
-import { getPosition, getMoonPosition} from "suncalc";
+import { getPosition, getMoonPosition, getTimes } from "suncalc";
 import type Mapgl from "../project";
 import { radToDeg } from "./utils";
 
@@ -14,46 +14,32 @@ interface AmbientLightSource {
   color: [number, number, number];
 }
 
-const MAX_SUN_INTENSITY = 0.6;
-const MAX_AMBIENT_INTENSITY = 0.7;
-const MAX_MOON_INTENSITY = 0.2; // Пока что не учитываем фазы луны
-
 export class MapglLightingControl {
   constructor(private map: Mapgl.Map) {}
 
   public setLightingForDate(date: Date): void {
     const [lng, lat] = this.map.getCenter();
+    const times = getTimes(date, lat, lng);
     const sunPosition = getPosition(date, lat, lng);
     const moonPosition = getMoonPosition(date, lat, lng);
 
     const sunAltitude = radToDeg(sunPosition.altitude);
-    const sunAzimuth = radToDeg(sunPosition.azimuth);
+    const sunAzimuth = radToDeg(sunPosition.azimuth + Math.PI);
     const moonAltitude = radToDeg(moonPosition.altitude);
-    const moonAzimuth = radToDeg(moonPosition.azimuth);
+    const moonAzimuth = radToDeg(moonPosition.azimuth + Math.PI);
 
-    const sunIntensityFactor =
-      sunAltitude > 0 ? Math.max(sunAltitude / 90, 0.85) : 0;
-    const moonIntensityFactor =
-      moonAltitude > 0 ? Math.max(moonAltitude / 90, 0.85) : 0;
+    const sunIntensity = sunAltitude > 0 ? Math.sin(sunPosition.altitude) : 0;
+    const moonIntensity = sunAltitude < 0 ? 1 : 0;
 
-    const sunIntensity = MAX_SUN_INTENSITY * sunIntensityFactor;
-    const moonIntensity = MAX_MOON_INTENSITY * moonIntensityFactor;
-    const ambientIntensity = Math.max(
-      0.5,
-      ((sunIntensity + moonIntensity) /
-        (MAX_SUN_INTENSITY + MAX_MOON_INTENSITY)) *
-        MAX_AMBIENT_INTENSITY,
-    );
+    const ambientIntensity = Math.min(0.25 + Math.sin(sunPosition.altitude) * 0.4, 1.2 - sunIntensity);
 
-    const hour = date.getHours() + date.getMinutes() / 60;
-    const colorFactor =
-      Math.max(0, 1 - Math.max(0, (hour < 10 ? 10 - hour : hour - 14) / 6));
+    const GBColorFactor = Math.round(255 * Math.max(0, Math.sin(sunPosition.altitude)));
 
     this.setLighting({
       sun: {
         altitude: sunAltitude,
         azimuth: sunAzimuth,
-        color: [255, Math.round(255 * (0.5 + colorFactor / 2)), Math.round(255 * colorFactor)],
+        color: [255, GBColorFactor, GBColorFactor],
         intensity: sunIntensity,
       },
       moon: {
