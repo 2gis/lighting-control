@@ -14,12 +14,15 @@ interface AmbientLightSource {
   color: [number, number, number];
 }
 
+const SUN_INTENSITY = 0.3;
+const AMBIENT_INTENSITY = 0.75;
+const MOON_INTENSITY = 0;
+
 export class MapglLightingControl {
   constructor(private map: Mapgl.Map) {}
 
   public setLightingForDate(date: Date): void {
     const [lng, lat] = this.map.getCenter();
-    const times = getTimes(date, lat, lng);
     const sunPosition = getPosition(date, lat, lng);
     const moonPosition = getMoonPosition(date, lat, lng);
 
@@ -28,18 +31,18 @@ export class MapglLightingControl {
     const moonAltitude = radToDeg(moonPosition.altitude);
     const moonAzimuth = radToDeg(moonPosition.azimuth + Math.PI);
 
-    const sunIntensity = sunAltitude > 0 ? Math.sin(sunPosition.altitude) : 0;
-    const moonIntensity = sunAltitude < 0 ? 1 : 0;
+    const sunIntensity = Math.sin(sunPosition.altitude) < 0 ? 0 : SUN_INTENSITY;
+    const moonIntensity = MOON_INTENSITY;
+    
+    const ambientIntensity = AMBIENT_INTENSITY - moonIntensity;
 
-    const ambientIntensity = Math.min(0.25 + Math.sin(sunPosition.altitude) * 0.4, 1.2 - sunIntensity);
-
-    const GBColorFactor = Math.round(255 * Math.max(0, Math.sin(sunPosition.altitude)));
+    const GBColorFactor = Math.round(255 * (0.9 + 0.1 * Math.max(0, Math.sin(sunPosition.altitude))));
 
     this.setLighting({
       sun: {
         altitude: sunAltitude,
         azimuth: sunAzimuth,
-        color: [255, GBColorFactor, GBColorFactor],
+        color: [255, 255, 255],
         intensity: sunIntensity,
       },
       moon: {
@@ -49,7 +52,7 @@ export class MapglLightingControl {
         intensity: moonIntensity,
       },
       atmosphere: {
-        color: [255, 255, 255],
+        color: [255, GBColorFactor, GBColorFactor],
         intensity: ambientIntensity,
       },
       shadowSource: "sun",
