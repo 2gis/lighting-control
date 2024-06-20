@@ -35,8 +35,8 @@ export const MapglMap: FC = () => {
           key: process.env.NEXT_PUBLIC_MAPGL_API_KEY,
           enableTrackResize: true,
           disableAntiAliasing: false,
-          maxPitch: 80,
-          lowZoomMaxPitch: 80,
+          maxPitch: 70,
+          lowZoomMaxPitch: 45,
         }
       );
 
