@@ -39,7 +39,7 @@ export const MapProvider: FC<{ children: ReactNode }> = ({ children }) => {
   );
 
   const ensureApi = async () => {
-    const api = await loadMapApi('https://mapgl.2gis.com/api/js/v0.0.335');
+    const api = await loadMapApi();
     setApi(api);
     return api;
   };
