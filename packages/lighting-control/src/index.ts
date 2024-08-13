@@ -93,7 +93,7 @@ export class MapglLightingControl {
         global: ["sun", "moon", "atmosphere"],
       },
       defaultLightingMode: "global",
-      shadow: {
+      shadows: {
         source: lightingConfig.shadowSource,
       },
     });
